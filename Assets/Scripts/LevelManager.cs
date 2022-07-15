@@ -1,62 +1,59 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System;
+using System.Collections.Generic;
 
 public class LevelManager : MonoBehaviour
 {
-    public static Action OnNextLevelLoad;
-    public static Action OnPlayButtonPressed;
+    public static Action<bool> OnLevelComplete;
+    public static Action OnLevelsFinished;
 
     [SerializeField] private GameObject[] lvlTowers;
-    [SerializeField] private GameObject nextLvlPanel;
-    [SerializeField] private Button nextLlvButton;
-    [SerializeField] private Button playAgainButton;
-    [SerializeField] private Button playButton;
-    [SerializeField] private TMP_Text lvlPanelText;
     [SerializeField] private int[] targetsPerLvl;
-    [SerializeField] private int collisionCountsNeeded = 1;
 
+    private Queue<GameObject> towersQueue = new Queue<GameObject>();
     private int currentLvl = 0;
     private int totalCollisionCounts = 0;
-    private bool isLevelCompleted = false;
+    private bool isLvlComplete = false;
 
     private void Awake()
     {
-        TargetColliderHit.OnCollisionCountsComplete += CheckIsLevelComplete;
-        BallLaunchHandler.OnBallsOver += ShowPlayAgainPanel;
-
-        nextLlvButton.onClick.AddListener(LoadNextLvl);
-        playAgainButton.onClick.AddListener(RestartLevel);
-        playButton.onClick.AddListener(PlayButtonPressed);
-        StartLevel();
+        TargetColliderHit.OnTargetCollisionCountsComplete += CheckIsLevelComplete;
+        BallLaunchHandler.OnBallsOver += CheckIsLevelFailed;
+        UILevelManager.OnNextLvlButtonPressed += LoadNextLvl;
+        UILevelManager.OnPlayGame += StartGame;
+        UILevelManager.OnResetLvlsButtonPressed += ResetCurrentLvl;
     }
 
-    private void PlayButtonPressed()
+    private void StartGame()
     {
-        OnPlayButtonPressed?.Invoke();
+        isLvlComplete = false;
+        totalCollisionCounts = 0;
+
+        if (towersQueue.Count > 0)
+        {
+            Destroy(towersQueue.Dequeue());
+        }
+
+        var lvl = Instantiate(lvlTowers[currentLvl]);
+        towersQueue.Enqueue(lvl);
     }
 
     private void CheckIsLevelComplete()
     {
         totalCollisionCounts++;
 
-        if (totalCollisionCounts >= collisionCountsNeeded * targetsPerLvl[currentLvl])
+        if (totalCollisionCounts >= targetsPerLvl[currentLvl])
         {
-            ShowNextLvlPanel();
-            isLevelCompleted = true;
+            isLvlComplete = true;
+            OnLevelComplete?.Invoke(isLvlComplete);
         }
     }
 
-    private void ShowNextLvlPanel()
+    private void CheckIsLevelFailed()
     {
-        lvlPanelText.text = "Well done!";
-        nextLvlPanel.SetActive(true);
-        nextLlvButton.gameObject.SetActive(true);
-
-        if (currentLvl == lvlTowers.Length - 1)
+        if (!isLvlComplete)
         {
-            nextLlvButton.gameObject.SetActive(false);
+            OnLevelComplete?.Invoke(isLvlComplete);
         }
     }
 
@@ -64,40 +61,28 @@ public class LevelManager : MonoBehaviour
     {
         currentLvl++;
 
-        for (int i = 0; i < lvlTowers.Length; i++)
+        if (currentLvl < lvlTowers.Length)
         {
-            lvlTowers[i].SetActive(false);
+            StartGame();
+        }
 
-            StartLevel();
-            OnNextLevelLoad?.Invoke();
+        if (currentLvl == lvlTowers.Length - 1)
+        {
+            OnLevelsFinished?.Invoke();
         }
     }
 
-    private void StartLevel()
+    private void ResetCurrentLvl()
     {
-        lvlTowers[currentLvl].SetActive(true);
-        nextLvlPanel.SetActive(false);
-        isLevelCompleted = false;
-    }
-
-    private void ShowPlayAgainPanel()
-    {
-        if (!isLevelCompleted)
-        {
-            ShowNextLvlPanel();
-            nextLlvButton.gameObject.SetActive(false);
-            lvlPanelText.text = "Don't worry, try again!";
-        }
-    }
-
-    public void RestartLevel()
-    {
-        print("game restarted");
+        currentLvl = 0;
     }
 
     private void OnDestroy()
     {
-        BallLaunchHandler.OnBallsOver -= ShowPlayAgainPanel;
-        TargetColliderHit.OnCollisionCountsComplete -= CheckIsLevelComplete;
+        TargetColliderHit.OnTargetCollisionCountsComplete -= CheckIsLevelComplete;
+        BallLaunchHandler.OnBallsOver -= CheckIsLevelFailed;
+        UILevelManager.OnNextLvlButtonPressed -= LoadNextLvl;
+        UILevelManager.OnPlayGame -= StartGame;
+        UILevelManager.OnResetLvlsButtonPressed -= ResetCurrentLvl;
     }
 }

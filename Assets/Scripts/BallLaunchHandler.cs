@@ -9,7 +9,7 @@ public class BallLaunchHandler : MonoBehaviour
 
     [SerializeField] private GameObject ballPrefab;
     [SerializeField] private Rigidbody2D pivot;
-    [SerializeField] private float spawnDelay = 5f;
+    [SerializeField] private float spawnDelay = 1f;
     [SerializeField] private float detachDelay = 0.15f;
 
     private List<GameObject> clonePrefabList = new List<GameObject>();
@@ -19,16 +19,30 @@ public class BallLaunchHandler : MonoBehaviour
     private Camera mainCamera;
     private bool isBallDragging;
     private int ballQuantity = 3;
+    private bool canTouch = false;
 
     private void Awake()
     {
-        LevelManager.OnNextLevelLoad += DestroyAllBalls;
-        //LevelManager.OnPlayButtonPressed += SpawnBall;
+        UILevelManager.OnNextLvlButtonPressed += ResetBalls;
+        UILevelManager.OnPlayGame += ResetBalls;
+        LevelManager.OnLevelComplete += CanTouchFalse;
 
         mainCamera = Camera.main;
-        SpawnBall();
     }
 
+    private void CanTouchFalse(bool lvlComplete)
+    {
+        canTouch = false;
+    }
+
+    private void ResetBalls()
+    {
+        ballQuantity = 3;
+        canTouch = true;
+
+        DestroyAllBalls();
+        SpawnBall();
+    }
     private void DestroyAllBalls()
     {
         for (int i = 0; i < clonePrefabList.Count; i++)
@@ -42,6 +56,8 @@ public class BallLaunchHandler : MonoBehaviour
     private void Update()
     {
         if (currentBallRigidbody == null) { return; }
+
+        if (canTouch == false) { return; }
 
         if (!Touchscreen.current.primaryTouch.press.isPressed)
         {
@@ -86,9 +102,7 @@ public class BallLaunchHandler : MonoBehaviour
 
     private void SpawnBall()
     {
-        ballQuantity--;
-
-        if (ballQuantity >= 0)
+        if (ballQuantity > 0)
         {
             GameObject ballInstance = Instantiate(ballPrefab, pivot.position, Quaternion.identity);
             currentBallRigidbody = ballInstance.GetComponent<Rigidbody2D>();
@@ -101,13 +115,15 @@ public class BallLaunchHandler : MonoBehaviour
         else
         {
             OnBallsOver?.Invoke();
-            ballQuantity = 3;
         }
+
+        ballQuantity--;
     }
 
     private void OnDestroy()
     {
-        LevelManager.OnNextLevelLoad -= DestroyAllBalls;
-        //LevelManager.OnPlayButtonPressed -= SpawnBall;
+        UILevelManager.OnNextLvlButtonPressed -= ResetBalls;
+        UILevelManager.OnPlayGame -= ResetBalls;
+        LevelManager.OnLevelComplete -= CanTouchFalse;
     }
 }

@@ -3,14 +3,19 @@ using System;
 
 public class TargetColliderHit : MonoBehaviour
 {
-    public static Action OnCollisionCountsComplete;
+    public static Action OnTargetCollisionCountsComplete;
     
-    private SpriteRenderer renderColorHitChanger;
-    private int counter = 0;
+    private SpriteRenderer colorRenderer;
+    private Color defaultColor;
+    private int counter;
 
     private void Awake()
     {
-        renderColorHitChanger = GetComponent<SpriteRenderer>();
+        UILevelManager.OnPlayGame += Init;
+        UILevelManager.OnNextLvlButtonPressed += Init;
+        colorRenderer = GetComponent<SpriteRenderer>();
+        defaultColor = colorRenderer.material.color;
+        Init();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -20,16 +25,28 @@ public class TargetColliderHit : MonoBehaviour
         switch (counter)
         {
             case 1:
-                renderColorHitChanger.material.color = Color.blue;
+                colorRenderer.material.color = Color.blue;
                 break;
             case 2:
-                renderColorHitChanger.material.color = Color.red;
-                OnCollisionCountsComplete?.Invoke();
-                counter = 0;
-                Destroy(this);
+                colorRenderer.material.color = Color.red;
+                OnTargetCollisionCountsComplete?.Invoke();
+                this.gameObject.SetActive(false);
                 break;
             default:
                 break;
         }
+    }
+
+    private void Init()
+    {
+        counter = 0;
+        colorRenderer.material.color = defaultColor;
+        this.gameObject.SetActive(true);
+    }
+
+    private void OnDestroy()
+    {
+        UILevelManager.OnPlayGame -= Init;
+        UILevelManager.OnNextLvlButtonPressed -= Init;
     }
 }

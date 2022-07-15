@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions;
 using System;
 
 public class CanvasAndPanelManager : MonoBehaviour
@@ -16,8 +15,6 @@ public class CanvasAndPanelManager : MonoBehaviour
 
     private void ShowCanvas(List<string> canvasNameList)
     {
-        Assert.IsNotNull(canvasNameList);
-
         foreach (var canvas in CanvasToOpen)
         {
             canvas.CanvasObj.enabled = false;
@@ -31,8 +28,6 @@ public class CanvasAndPanelManager : MonoBehaviour
 
     private void ShowPanel(List<string> panelNameList)
     {
-        Assert.IsNotNull(panelNameList);
-
         foreach (var panel in PanelToOpen)
         {
             panel.PanelObj.SetActive(false);
