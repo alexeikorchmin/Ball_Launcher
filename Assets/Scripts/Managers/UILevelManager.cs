@@ -1,7 +1,7 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System;
 
 public class UILevelManager : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class UILevelManager : MonoBehaviour
     [SerializeField] private GameObject lvlResultPanel;
     [SerializeField] private Button playButton;
     [SerializeField] private Button playAgainButton;
-    [SerializeField] private Button nextLlvButton;
+    [SerializeField] private Button nextLvlButton;
     [SerializeField] private Button ResetLvlsButton;
     [SerializeField] private TMP_Text lvlResultPanelText;
 
@@ -24,6 +24,15 @@ public class UILevelManager : MonoBehaviour
         LevelManager.OnLevelComplete += ShowLvlResultPanel;
         LevelManager.OnLevelsFinished += NoNextLvlChangeValue;
         Init();
+    }
+
+    private void Init()
+    {
+        mainMenuPanel.SetActive(true);
+        playButton.onClick.AddListener(PlayGame);
+        playAgainButton.onClick.AddListener(PlayGame);
+        nextLvlButton.onClick.AddListener(LoadNextLvl);
+        ResetLvlsButton.onClick.AddListener(ResetLvls);
     }
 
     private void PlayGame()
@@ -39,7 +48,6 @@ public class UILevelManager : MonoBehaviour
     private void ResetLvls()
     {
         OnResetLvlsButtonPressed?.Invoke();
-        ResetLvlsButton.gameObject.SetActive(false);
         noNextLvl = false;
     }
 
@@ -49,11 +57,11 @@ public class UILevelManager : MonoBehaviour
         {
             lvlResultPanel.SetActive(true);
             lvlResultPanelText.text = "Well done!";
-            nextLlvButton.gameObject.SetActive(true);
+            nextLvlButton.gameObject.SetActive(true);
 
             if (noNextLvl)
             {
-                nextLlvButton.gameObject.SetActive(false);
+                nextLvlButton.gameObject.SetActive(false);
                 ResetLvlsButton.gameObject.SetActive(true);
             }
         }
@@ -61,22 +69,13 @@ public class UILevelManager : MonoBehaviour
         {
             lvlResultPanel.SetActive(true);
             lvlResultPanelText.text = "Try again";
-            nextLlvButton.gameObject.SetActive(false);
+            nextLvlButton.gameObject.SetActive(false);
         }
     }
 
     private void NoNextLvlChangeValue()
     {
         noNextLvl = true;
-    }
-
-    private void Init()
-    {
-        mainMenuPanel.SetActive(true);
-        playButton.onClick.AddListener(PlayGame);
-        playAgainButton.onClick.AddListener(PlayGame);
-        nextLlvButton.onClick.AddListener(LoadNextLvl);
-        ResetLvlsButton.onClick.AddListener(ResetLvls);
     }
 
     private void OnDestroy()

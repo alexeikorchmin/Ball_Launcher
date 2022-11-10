@@ -169,7 +169,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 1, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -434,7 +434,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2801455536651477876, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -177.36841
+      value: -220
       objectReference: {fileID: 0}
     - target: {fileID: 2801455536651477876, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -584,7 +584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2801455536651477876, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -177.36841
+      value: -220
       objectReference: {fileID: 0}
     - target: {fileID: 2801455536651477876, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -635,6 +635,11 @@ Transform:
   m_Father: {fileID: 450468691}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &348317613 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 751759246254023637, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
+  m_PrefabInstance: {fileID: 612164737}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &349462336
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -923,7 +928,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2801455536651477876, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -177.36841
+      value: -220
       objectReference: {fileID: 0}
     - target: {fileID: 2801455536651477876, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1081,7 +1086,11 @@ MonoBehaviour:
   - PanelObj: {fileID: 1910144538}
     PanelName: MainMenu
   - PanelObj: {fileID: 844390742}
-    PanelName: LvlCompleted
+    PanelName: ResultLevel
+  - PanelObj: {fileID: 1387563145}
+    PanelName: MenuButton
+  - PanelObj: {fileID: 348317613}
+    PanelName: ResetLevelsButton
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1229,7 +1238,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e42ff67f66eb604090605fbe5e338f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panelToOpen: []
+  panelToOpen:
+  - MenuButton
 --- !u!1 &599754050
 GameObject:
   m_ObjectHideFlags: 0
@@ -1349,7 +1359,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2801455536651477876, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -177.36841
+      value: -220
       objectReference: {fileID: 0}
     - target: {fileID: 2801455536651477876, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1374,12 +1384,26 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8419688793701225570, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
   m_PrefabInstance: {fileID: 612164737}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 348317613}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &612164742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348317613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e42ff67f66eb604090605fbe5e338f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelToOpen:
+  - MainMenu
 --- !u!1001 &642023982
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1461,7 +1485,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2801455536651477876, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -177.36841
+      value: -220
       objectReference: {fileID: 0}
     - target: {fileID: 2801455536651477876, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1756,7 +1780,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7488093567451898222, guid: 27de6cd0bd2562e4bbf9b4550846639d, type: 3}
       propertyPath: m_Name
-      value: LvlResultPanel
+      value: ResultLevelPanel
       objectReference: {fileID: 0}
     - target: {fileID: 7488093567451898222, guid: 27de6cd0bd2562e4bbf9b4550846639d, type: 3}
       propertyPath: m_IsActive
@@ -1971,7 +1995,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2801455536651477876, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -177.36841
+      value: -220
       objectReference: {fileID: 0}
     - target: {fileID: 2801455536651477876, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2120,7 +2144,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2801455536651477876, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -177.36841
+      value: -220
       objectReference: {fileID: 0}
     - target: {fileID: 2801455536651477876, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2317,6 +2341,10 @@ PrefabInstance:
     - target: {fileID: 751759246254023637, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
       propertyPath: m_Name
       value: MenuButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 751759246254023637, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2801455536651477876, guid: 0617f41b0f886f0448a1e3e38a154e9a, type: 3}
       propertyPath: m_Pivot.x
@@ -2589,7 +2617,7 @@ MonoBehaviour:
   lvlResultPanel: {fileID: 844390742}
   playButton: {fileID: 599104389}
   playAgainButton: {fileID: 2072612906}
-  nextLlvButton: {fileID: 1135729913}
+  nextLvlButton: {fileID: 1135729913}
   ResetLvlsButton: {fileID: 612164738}
   lvlResultPanelText: {fileID: 759982117}
 --- !u!1001 &1910144536

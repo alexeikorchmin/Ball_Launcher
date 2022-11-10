@@ -1,7 +1,7 @@
-using UnityEngine;
 using System;
+using UnityEngine;
 
-public class TargetColliderHit : MonoBehaviour
+public class TargetColliderHitHandler : MonoBehaviour
 {
     public static Action OnTargetCollisionCountsComplete;
     

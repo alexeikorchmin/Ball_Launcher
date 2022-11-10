@@ -1,6 +1,6 @@
-using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
@@ -17,7 +17,7 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
-        TargetColliderHit.OnTargetCollisionCountsComplete += CheckIsLevelComplete;
+        TargetColliderHitHandler.OnTargetCollisionCountsComplete += CheckIsLevelComplete;
         BallLaunchHandler.OnBallsOver += CheckIsLevelFailed;
         UILevelManager.OnNextLvlButtonPressed += LoadNextLvl;
         UILevelManager.OnPlayGame += StartGame;
@@ -79,7 +79,7 @@ public class LevelManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        TargetColliderHit.OnTargetCollisionCountsComplete -= CheckIsLevelComplete;
+        TargetColliderHitHandler.OnTargetCollisionCountsComplete -= CheckIsLevelComplete;
         BallLaunchHandler.OnBallsOver -= CheckIsLevelFailed;
         UILevelManager.OnNextLvlButtonPressed -= LoadNextLvl;
         UILevelManager.OnPlayGame -= StartGame;

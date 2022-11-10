@@ -1,7 +1,7 @@
-using UnityEngine;
-using UnityEngine.InputSystem;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BallLaunchHandler : MonoBehaviour
 {
@@ -43,6 +43,7 @@ public class BallLaunchHandler : MonoBehaviour
         DestroyAllBalls();
         SpawnBall();
     }
+
     private void DestroyAllBalls()
     {
         for (int i = 0; i < clonePrefabList.Count; i++)
@@ -55,9 +56,14 @@ public class BallLaunchHandler : MonoBehaviour
 
     private void Update()
     {
-        if (currentBallRigidbody == null) { return; }
+        PreLaunchTouchCheck();
+    }
 
-        if (canTouch == false) { return; }
+    private void PreLaunchTouchCheck()
+    {
+        if (currentBallRigidbody == null) return;
+
+        if (canTouch == false) return;
 
         if (!Touchscreen.current.primaryTouch.press.isPressed)
         {
@@ -73,16 +79,22 @@ public class BallLaunchHandler : MonoBehaviour
         Vector2 currentTouchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
 
         if (currentTouchPosition.x == Mathf.Infinity ||
-           currentTouchPosition.y == Mathf.Infinity)
+            currentTouchPosition.y == Mathf.Infinity ||
+            currentTouchPosition.x > Screen.width / 2)
         {
+            currentBallRigidbody.bodyType = RigidbodyType2D.Static;
             return;
         }
 
         isBallDragging = true;
         currentBallRigidbody.isKinematic = true;
-
         Vector3 worldPosition = mainCamera.ScreenToWorldPoint(currentTouchPosition);
         currentBallRigidbody.position = worldPosition;
+
+        if (currentTouchPosition.x > Screen.width / 2 && isBallDragging == true)
+        {
+            LaunchBall();
+        }
     }
 
     private void LaunchBall()
@@ -91,6 +103,7 @@ public class BallLaunchHandler : MonoBehaviour
         currentBallRigidbody = null;
         currentBallCollider2D.enabled = true;
         Invoke(nameof(DetachBall), detachDelay);
+        isBallDragging = false;
     }
 
     private void DetachBall()
@@ -113,9 +126,7 @@ public class BallLaunchHandler : MonoBehaviour
             clonePrefabList.Add(ballInstance);
         }
         else
-        {
             OnBallsOver?.Invoke();
-        }
 
         ballQuantity--;
     }

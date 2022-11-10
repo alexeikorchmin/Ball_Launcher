@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class CanvasAndPanelManager : MonoBehaviour
 {
@@ -20,9 +20,7 @@ public class CanvasAndPanelManager : MonoBehaviour
             canvas.CanvasObj.enabled = false;
 
             if (canvasNameList.Contains(canvas.CanvasName))
-            {
                 canvas.CanvasObj.enabled = true;
-            }
         }
     }
 
@@ -33,9 +31,7 @@ public class CanvasAndPanelManager : MonoBehaviour
             panel.PanelObj.SetActive(false);
 
             if (panelNameList.Contains(panel.PanelName))
-            {
                 panel.PanelObj.SetActive(true);
-            }
         }
     }
 

@@ -1,13 +1,13 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 
-public class OpenCanvasOnButtonClick : MonoBehaviour
+public class OpenPanelOnButtonClick : MonoBehaviour
 {
-    public static Action<List<string>> OnCanvasToOpen;
-    
-    [SerializeField] private List<string> canvasToOpen = new List<string>();
+    public static Action<List<string>> OnPanelToOpen;
+
+    [SerializeField] private List<string> panelToOpen = new List<string>();
 
     private Button button;
 
@@ -19,6 +19,6 @@ public class OpenCanvasOnButtonClick : MonoBehaviour
 
     private void ButtonIsPressed()
     {
-        OnCanvasToOpen?.Invoke(canvasToOpen);
+        OnPanelToOpen?.Invoke(panelToOpen);
     }
 }
