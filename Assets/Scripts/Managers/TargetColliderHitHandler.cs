@@ -11,8 +11,8 @@ public class TargetColliderHitHandler : MonoBehaviour
 
     private void Awake()
     {
-        UILevelManager.OnPlayGame += Init;
-        UILevelManager.OnNextLvlButtonPressed += Init;
+        UIManager.OnPlayGame += Init;
+        UIManager.OnNextLvlButtonPressed += Init;
         colorRenderer = GetComponent<SpriteRenderer>();
         defaultColor = colorRenderer.material.color;
         Init();
@@ -46,7 +46,7 @@ public class TargetColliderHitHandler : MonoBehaviour
 
     private void OnDestroy()
     {
-        UILevelManager.OnPlayGame -= Init;
-        UILevelManager.OnNextLvlButtonPressed -= Init;
+        UIManager.OnPlayGame -= Init;
+        UIManager.OnNextLvlButtonPressed -= Init;
     }
 }

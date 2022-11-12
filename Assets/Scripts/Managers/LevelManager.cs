@@ -18,13 +18,13 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         TargetColliderHitHandler.OnTargetCollisionCountsComplete += CheckIsLevelComplete;
-        BallLaunchHandler.OnBallsOver += CheckIsLevelFailed;
-        UILevelManager.OnNextLvlButtonPressed += LoadNextLvl;
-        UILevelManager.OnPlayGame += StartGame;
-        UILevelManager.OnResetLvlsButtonPressed += ResetCurrentLvl;
+        BallLaunchHandler.OnBallsOver += OnBallsOverHandler;
+        UIManager.OnNextLvlButtonPressed += LoadNextLvl;
+        UIManager.OnPlayGame += OnPlayGameHandler;
+        UIManager.OnResetLvlsButtonPressed += ResetCurrentLvl;
     }
 
-    private void StartGame()
+    private void OnPlayGameHandler()
     {
         isLvlComplete = false;
         totalCollisionCounts = 0;
@@ -49,7 +49,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void CheckIsLevelFailed()
+    private void OnBallsOverHandler()
     {
         if (!isLvlComplete)
         {
@@ -63,7 +63,7 @@ public class LevelManager : MonoBehaviour
 
         if (currentLvl < lvlTowers.Length)
         {
-            StartGame();
+            OnPlayGameHandler();
         }
 
         if (currentLvl == lvlTowers.Length - 1)
@@ -80,9 +80,9 @@ public class LevelManager : MonoBehaviour
     private void OnDestroy()
     {
         TargetColliderHitHandler.OnTargetCollisionCountsComplete -= CheckIsLevelComplete;
-        BallLaunchHandler.OnBallsOver -= CheckIsLevelFailed;
-        UILevelManager.OnNextLvlButtonPressed -= LoadNextLvl;
-        UILevelManager.OnPlayGame -= StartGame;
-        UILevelManager.OnResetLvlsButtonPressed -= ResetCurrentLvl;
+        BallLaunchHandler.OnBallsOver -= OnBallsOverHandler;
+        UIManager.OnNextLvlButtonPressed -= LoadNextLvl;
+        UIManager.OnPlayGame -= OnPlayGameHandler;
+        UIManager.OnResetLvlsButtonPressed -= ResetCurrentLvl;
     }
 }

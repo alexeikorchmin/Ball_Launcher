@@ -19,39 +19,19 @@ public class BallLaunchHandler : MonoBehaviour
     private Camera mainCamera;
     private bool isBallDragging;
     private int ballQuantity = 3;
-    private bool canTouch = false;
+    private bool canTouchBall;
+
+    public void SetCanTouchBallValue(bool canTouch)
+    {
+        canTouchBall = canTouch;
+    }
 
     private void Awake()
     {
-        UILevelManager.OnNextLvlButtonPressed += ResetBalls;
-        UILevelManager.OnPlayGame += ResetBalls;
-        LevelManager.OnLevelComplete += CanTouchFalse;
+        UIManager.OnNextLvlButtonPressed += ResetBalls;
+        UIManager.OnPlayGame += ResetBalls;
 
         mainCamera = Camera.main;
-    }
-
-    private void CanTouchFalse(bool lvlComplete)
-    {
-        canTouch = false;
-    }
-
-    private void ResetBalls()
-    {
-        ballQuantity = 3;
-        canTouch = true;
-
-        DestroyAllBalls();
-        SpawnBall();
-    }
-
-    private void DestroyAllBalls()
-    {
-        for (int i = 0; i < clonePrefabList.Count; i++)
-        {
-            Destroy(clonePrefabList[i]);
-        }
-
-        clonePrefabList.Clear();
     }
 
     private void Update()
@@ -59,11 +39,20 @@ public class BallLaunchHandler : MonoBehaviour
         PreLaunchTouchCheck();
     }
 
+    private void ResetBalls()
+    {
+        ballQuantity = 3;
+        canTouchBall = true;
+
+        DestroyAllBalls();
+        SpawnBall();
+    }
+
     private void PreLaunchTouchCheck()
     {
         if (currentBallRigidbody == null) return;
 
-        if (canTouch == false) return;
+        if (canTouchBall == false) return;
 
         if (!Touchscreen.current.primaryTouch.press.isPressed)
         {
@@ -81,6 +70,7 @@ public class BallLaunchHandler : MonoBehaviour
         if (currentTouchPosition.x == Mathf.Infinity ||
             currentTouchPosition.y == Mathf.Infinity ||
             currentTouchPosition.x > Screen.width / 2)
+            
         {
             currentBallRigidbody.bodyType = RigidbodyType2D.Static;
             return;
@@ -90,11 +80,6 @@ public class BallLaunchHandler : MonoBehaviour
         currentBallRigidbody.isKinematic = true;
         Vector3 worldPosition = mainCamera.ScreenToWorldPoint(currentTouchPosition);
         currentBallRigidbody.position = worldPosition;
-
-        if (currentTouchPosition.x > Screen.width / 2 && isBallDragging == true)
-        {
-            LaunchBall();
-        }
     }
 
     private void LaunchBall()
@@ -131,10 +116,19 @@ public class BallLaunchHandler : MonoBehaviour
         ballQuantity--;
     }
 
+    private void DestroyAllBalls()
+    {
+        for (int i = 0; i < clonePrefabList.Count; i++)
+        {
+            Destroy(clonePrefabList[i]);
+        }
+
+        clonePrefabList.Clear();
+    }
+
     private void OnDestroy()
     {
-        UILevelManager.OnNextLvlButtonPressed -= ResetBalls;
-        UILevelManager.OnPlayGame -= ResetBalls;
-        LevelManager.OnLevelComplete -= CanTouchFalse;
+        UIManager.OnNextLvlButtonPressed -= ResetBalls;
+        UIManager.OnPlayGame -= ResetBalls;
     }
 }
