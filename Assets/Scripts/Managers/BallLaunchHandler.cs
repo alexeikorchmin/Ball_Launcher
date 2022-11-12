@@ -8,6 +8,7 @@ public class BallLaunchHandler : MonoBehaviour
     public static Action OnBallsOver;
 
     [SerializeField] private GameObject ballPrefab;
+    [SerializeField] private Transform ballParent;
     [SerializeField] private Rigidbody2D pivot;
     [SerializeField] private float spawnDelay = 1f;
     [SerializeField] private float detachDelay = 0.15f;
@@ -102,7 +103,7 @@ public class BallLaunchHandler : MonoBehaviour
     {
         if (ballQuantity > 0)
         {
-            GameObject ballInstance = Instantiate(ballPrefab, pivot.position, Quaternion.identity);
+            GameObject ballInstance = Instantiate(ballPrefab, pivot.position, Quaternion.identity, ballParent);
             currentBallRigidbody = ballInstance.GetComponent<Rigidbody2D>();
             currentBallSpringJoint = ballInstance.GetComponent<SpringJoint2D>();
             currentBallCollider2D = ballInstance.GetComponent<Collider2D>();

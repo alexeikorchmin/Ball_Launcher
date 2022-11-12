@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
     public static Action<bool> OnLevelComplete;
     public static Action OnLevelsFinished;
 
+    [SerializeField] private Transform towersParent;
     [SerializeField] private GameObject[] lvlTowers;
     [SerializeField] private int[] targetsPerLvl;
 
@@ -34,7 +35,7 @@ public class LevelManager : MonoBehaviour
             Destroy(towersQueue.Dequeue());
         }
 
-        var lvl = Instantiate(lvlTowers[currentLvl]);
+        var lvl = Instantiate(lvlTowers[currentLvl], towersParent);
         towersQueue.Enqueue(lvl);
     }
 
